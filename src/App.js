@@ -2,18 +2,24 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import './App.css';
+import { abi } from "./utils/WavePortal.json";
 
 // deployed on rinkeby at 0x8F9C31a4c214Ad2921251e5eB1A9E34862260085
+const contractAddress = '0x8F9C31a4c214Ad2921251e5eB1A9E34862260085';
+const contractABI = abi;
 
 export default function App() {
 
-    // Just a state variable we use to store our user's public  wallet.
+    // state variable  to store our user's public wallet.
     const [currentAccount, setCurrentAccount] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isWaving, setIsWaving] = useState(false);
 
-    // First make sure we have access to window.ethereum
+    // check for access to window.ethereum 
     const checkIfWalletIsConnected = async () => {
 
         try{
+        
 
             const { ethereum } = window;
 
@@ -72,8 +78,8 @@ export default function App() {
 
     const connectWallet = async () => {
         
-        try {
-              const { ethereum } = window;
+        try{
+            const { ethereum } = window;
 
             if (!ethereum) {
                 alert("Get MetaMask!");
@@ -91,19 +97,24 @@ export default function App() {
 
     return (
         <div className="mainContainer">
+            {
 
+            }
             <div className="dataContainer">
                 <div className="header">
                     Hey there!
                 </div>
 
                 <div className="bio">
-                    I am Omkar, an undergrad and a web3 enthusiast. 
-                    <br />This is my first web3 project and Hop in if you find this interesting.
+                    I am Omkar, a CS undergrad and a web3 enthusiast. 
+                    <br />
+                    This is my first web3 project and Hop in if you find this interesting.
+                    <br /> 
+                    
                 </div>
 
                 <button className="waveButton" onClick={wave}>
-                    Wave at Me
+                    Wave at Me 
                 </button>
 
                 {!currentAccount && (
