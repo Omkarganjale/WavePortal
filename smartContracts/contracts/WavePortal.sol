@@ -45,7 +45,6 @@ contract WavePortal {
         console.log("I AM SMART CONTRACT. POG.");
     }
 
-    
     function wave(string memory _message) public {
         totalWaves += 1;
         console.log("%s has waved!", msg.sender);
