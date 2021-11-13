@@ -10,9 +10,13 @@ const contractABI = abi;
 
 export default function App() {
 	// state variable  to store our user's public wallet.
+
 	const [currentAccount, setCurrentAccount] = useState('');
+
 	const [isLoading, setIsLoading] = useState(false);
     const [loadingMsg, setLoadingMsg] = useState("Loading...");
+
+    const [isWaving, setIsWaving] = useState(false);
 	const [waveBtnMsg, setWaveBtnMsg] = useState("Wave at Me");
 
 	// check for access to window.ethereum
@@ -56,6 +60,7 @@ export default function App() {
 
 	const wave = async () => {
 
+        setIsWaving(true);
         setWaveBtnMsg('Waving');
 
 		try {
@@ -80,12 +85,14 @@ export default function App() {
 		}
 
         setWaveBtnMsg('Wave at Me');
+        setIsWaving(false);
 	};
 
 	const connectWallet = async () => {
 
         setIsLoading(true);
-        setLoadingMsg('Requesting accounts');
+        setLoadingMsg('Requesting wallet');
+
 
 		try {
 			const { ethereum } = window;
@@ -129,7 +136,7 @@ export default function App() {
                         <br />
                     </div>
 
-                    <button className='waveButton' onClick={wave}>
+                    <button className='waveButton' onClick={wave} disable={isWaving.toString()}>
                         {waveBtnMsg}
                     </button>
 
