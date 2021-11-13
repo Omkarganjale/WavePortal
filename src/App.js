@@ -6,7 +6,10 @@ import LoadContainer from './Components/LoadContainer';
 
 // deployed on rinkeby at 0x8F9C31a4c214Ad2921251e5eB1A9E34862260085
 // v2 deployed at 0xc248818111298D37AF1AEf1d11B8f4eC123A1E81
-const contractAddress = '0xc248818111298D37AF1AEf1d11B8f4eC123A1E81';
+// v3 deployed at 0x8B43F4c791fD7c81332Ef733BBbe6437Ca662e4f
+// v4 deployed at 0x12BC712fc3592070Cd4D70cDD2bdDa9316078274
+
+const contractAddress = '0x12BC712fc3592070Cd4D70cDD2bdDa9316078274';
 const contractABI = abi;
 
 export default function App() {
