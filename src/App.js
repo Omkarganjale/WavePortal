@@ -11,11 +11,16 @@ const contractABI = abi;
 export default function App() {
 	// state variable  to store our user's public wallet.
 	const [currentAccount, setCurrentAccount] = useState('');
-	const [isLoading, setIsLoading] = useState(true);
-	const [isWaving, setIsWaving] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+    const [loadingMsg, setLoadingMsg] = useState("Loading...");
+	const [WaveBtnMsg, setWaveBtnMsg] = useState("Wave at Me");
 
 	// check for access to window.ethereum
 	const checkIfWalletIsConnected = async () => {
+
+        setIsLoading(true);
+        setLoadingMsg('Checking Wallet requirements');
+
 		try {
 			const { ethereum } = window;
 
@@ -41,6 +46,7 @@ export default function App() {
 		}
 
 		setIsLoading(false);
+        setLoadingMsg('Loading...');
 	};
 
 	// This runs our function when the page loads.
@@ -72,6 +78,10 @@ export default function App() {
 	};
 
 	const connectWallet = async () => {
+
+        setIsLoading(true);
+        setLoadingMsg('Requesting account access');
+
 		try {
 			const { ethereum } = window;
 
@@ -89,33 +99,48 @@ export default function App() {
 		} catch (error) {
 			console.log(error);
 		}
+
+        setIsLoading(false);
+        setLoadingMsg('Loading...');
 	};
 
 	return (
 		<div className='mainContainer'>
-			<div className='dataContainer'>
-				<div className='header'>Hey there!</div>
+            {isLoading?
+                <div className='loadContainer'>
+                    <Spinner isLoading={isLoading} /> 
+                    <div className='load'>
+                        {loadingMsg}
+                    </div>
+                </div> 
+                
+                :
 
-				<div className='bio'>
-					I am Omkar, a CS undergrad and a web3 enthusiast.
-					<br />
-					This is my first web3 project and Hop in if you find this
-					interesting.
-					<br />
-				</div>
+                <div className='dataContainer'>
+                    <div className='header'>Hey there!</div>
 
-				<button className='waveButton' onClick={wave}>
-					Wave at Me
-				</button>
+                    <div className='bio'>
+                        I am Omkar, a CS undergrad and a web3 enthusiast.
+                        <br />
+                        This is my first web3 project and Hop in if you find this
+                        interesting.
+                        <br />
+                    </div>
 
-				{!currentAccount && (
-					<button className='waveButton' onClick={connectWallet}>
-						Connect Wallet
-					</button>
-				)}
+                    <button className='waveButton' onClick={wave}>
+                        {WaveBtnMsg}
+                    </button>
 
-				{!isLoading && <Spinner isLoading={isLoading} />}
-			</div>
+                    {!currentAccount && (
+                        <button className='waveButton' onClick={connectWallet}>
+                            Connect Wallet
+                        </button>
+                    )}
+                
+                </div>
+
+            }
+			
 		</div>
 	);
 }

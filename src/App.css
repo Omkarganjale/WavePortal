@@ -30,6 +30,13 @@ body{
   font-size: 15px;
 }
 
+.load {
+  text-align: center;
+  color: #DFE6E4;
+  margin-top: 16px;
+  font-size: 15px;
+}
+
 .waveButton {
   cursor: pointer;
   margin-top: 16px;
