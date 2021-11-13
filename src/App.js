@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { abi } from './utils/WavePortal.json';
 import LoadContainer from './Components/LoadContainer';
+import Footer from './Components/Footer';
 
 // deployed on rinkeby at 0x8F9C31a4c214Ad2921251e5eB1A9E34862260085
 // v2 deployed at 0xc248818111298D37AF1AEf1d11B8f4eC123A1E81
@@ -16,7 +17,7 @@ export default function App() {
 
 	const [allWaves, setAllWaves] = useState([]);
 
-	const [greeting, setGreeting] = useState('');
+	const [greeting, setGreeting] = useState('Hi');
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [loadingMsg, setLoadingMsg] = useState('Loading...');
@@ -62,6 +63,10 @@ export default function App() {
 	useEffect(() => {
 		checkIfWalletIsConnected();
 	}, []);
+
+    useEffect( () => {
+        getAllWaves();
+    },[currentAccount])
 
 	const connectWallet = async () => {
 		setIsLoading(true);
@@ -180,6 +185,7 @@ export default function App() {
 	const onChange = (e) => setGreeting(e.target.value);
 
 	return (
+        
 		<div className='mainContainer'>
 			{isLoading ? (
 				<LoadContainer isLoading={isLoading} loadingMsg={loadingMsg} />
@@ -188,22 +194,32 @@ export default function App() {
 					<div className='header'>Hey there!</div>
 
 					<div className='bio'>
-						I am Omkar, a CS undergrad and a web3 enthusiast.
+						I am Omkar, an Engineering undergrad and a web3 enthusiast.
 						<br />
 						This is my first web3 project and Hop in if you find
 						this interesting.
 						<br />
+                        Get <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'>metamask</a> and <a href='https://faucets.chain.link/rinkeby'>rinkeby test ether</a> to read greetings.
 					</div>
 
-					{currentAccount && (
+                    {!currentAccount && (
+						<button className='waveButton' onClick={connectWallet}>
+							Connect Wallet
+						</button>
+					)}
+
+                    {currentAccount && (
 						<input
 							type='text'
-							value={'Enter your message here'}
+                            placeholder="Messages are immutable"
+                            className='usrtxt type-1'
 							onChange={(e) => {
 								onChange(e);
 							}}
+                            required
 						/>
 					)}
+
 					<button
 						className='waveButton'
 						onClick={wave}
@@ -212,21 +228,14 @@ export default function App() {
 						{waveBtnMsg}
 					</button>
 
-					{!currentAccount && (
-						<button className='waveButton' onClick={connectWallet}>
-							Connect Wallet
-						</button>
-					)}
+					
 
 					{allWaves.map((wave, index) => {
 						return (
 							<div
+                                className='element'
 								key={index}
-								style={{
-									backgroundColor: 'OldLace',
-									marginTop: '16px',
-									padding: '8px',
-								}}
+								
 							>
 								<div>Address: {wave.address}</div>
 								<div>Time: {wave.timestamp.toString()}</div>
@@ -236,6 +245,8 @@ export default function App() {
 					})}
 				</div>
 			)}
+
+            
 		</div>
 	);
 }

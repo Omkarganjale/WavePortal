@@ -1,3 +1,9 @@
+.footer {
+  flex-shrink: 0;
+  text-align: center;
+  background-color: #2F3B39;
+  color: #DFE6E4;
+}
 
 .mainContainer {
   display: flex;
@@ -44,8 +50,46 @@
   margin-top: 16px;
   padding: 8px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #CCD2D0;
   color: #2F3B39;
-  
+}
+
+body {
+  margin:40px;
+}
+* {
+  box-sizing: border-box;
+}
+
+input {
+  display:block;
+  width:100%;
+  margin:16px 0 0;
+  padding:10px;
+}
+
+.type-1 {
+  border-radius:10px;
+  border: 1px solid #eee;
+  transition: .3s border-color;
+}
+
+.type-1:hover {
+  border: 1px solid #aaa;
+}
+
+.element {
+    background-color: #CCD2D0;
+    color: #2F3B39;
+    margin-top: 16px;
+    padding: 8px;
+    border-radius: 10px;
+    font-family: sans-serif;
+}
+
+a{
+  color: #DFE6E4;
+  background-color: transparent;
+  text-decoration: underline;
 }
