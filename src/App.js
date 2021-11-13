@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { abi } from './utils/WavePortal.json';
-import Spinner from './Spinner';
+import LoadContainer from './Components/LoadContainer';
 
 // deployed on rinkeby at 0x8F9C31a4c214Ad2921251e5eB1A9E34862260085
 const contractAddress = '0x8F9C31a4c214Ad2921251e5eB1A9E34862260085';
@@ -13,7 +13,7 @@ export default function App() {
 	const [currentAccount, setCurrentAccount] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
     const [loadingMsg, setLoadingMsg] = useState("Loading...");
-	const [WaveBtnMsg, setWaveBtnMsg] = useState("Wave at Me");
+	const [waveBtnMsg, setWaveBtnMsg] = useState("Wave at Me");
 
 	// check for access to window.ethereum
 	const checkIfWalletIsConnected = async () => {
@@ -55,6 +55,9 @@ export default function App() {
 	}, []);
 
 	const wave = async () => {
+
+        setWaveBtnMsg('Waving');
+
 		try {
 			const { ethereum } = window;
 
@@ -75,12 +78,14 @@ export default function App() {
 		} catch (error) {
 			console.log(error);
 		}
+
+        setWaveBtnMsg('Wave at Me');
 	};
 
 	const connectWallet = async () => {
 
         setIsLoading(true);
-        setLoadingMsg('Requesting account access');
+        setLoadingMsg('Requesting accounts');
 
 		try {
 			const { ethereum } = window;
@@ -107,12 +112,9 @@ export default function App() {
 	return (
 		<div className='mainContainer'>
             {isLoading?
-                <div className='loadContainer'>
-                    <Spinner isLoading={isLoading} /> 
-                    <div className='load'>
-                        {loadingMsg}
-                    </div>
-                </div> 
+
+                <LoadContainer isLoading={isLoading} loadingMsg={loadingMsg} />
+                 
                 
                 :
 
@@ -128,7 +130,7 @@ export default function App() {
                     </div>
 
                     <button className='waveButton' onClick={wave}>
-                        {WaveBtnMsg}
+                        {waveBtnMsg}
                     </button>
 
                     {!currentAccount && (

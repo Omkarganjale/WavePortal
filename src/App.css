@@ -1,6 +1,3 @@
-body{
-  background-color: #5C6468;
-}
 
 .mainContainer {
   display: flex;
@@ -30,11 +27,16 @@ body{
   font-size: 15px;
 }
 
-.load {
+.loadContainer {
   text-align: center;
   color: #DFE6E4;
   margin-top: 16px;
   font-size: 15px;
+  align-content: center;
+}
+
+.spin {
+    margin: auto auto;
 }
 
 .waveButton {
