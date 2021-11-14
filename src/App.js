@@ -70,7 +70,7 @@ export default function App() {
 	// This runs our function when the page loads.
 	useEffect(() => {
 		checkIfWalletIsConnected();
-	}, []);
+	},[]);
 
     useEffect( () => {
         getAllWaves();
