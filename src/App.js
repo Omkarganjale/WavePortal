@@ -20,7 +20,7 @@ export default function App() {
 
 	const [allWaves, setAllWaves] = useState([]);
 
-	const [greeting, setGreeting] = useState('Hi');
+	const [greeting, setGreeting] = useState('Hello Omkar!');
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [loadingMsg, setLoadingMsg] = useState('Loading...');
@@ -28,19 +28,25 @@ export default function App() {
 	const [isWaving, setIsWaving] = useState(false);
 	const [waveBtnMsg, setWaveBtnMsg] = useState('Wave at Me');
 
+    const loadMe = (isl=false, lmsg='Loading...') => {
+        setIsLoading(isl);
+		setLoadingMsg(lmsg);
+    }
+
 	// check for access to window.ethereum
 	const checkIfWalletIsConnected = async () => {
-		setIsLoading(true);
-		setLoadingMsg('Checking Wallet requirements');
+
+        loadMe(true, 'Checking requirements');
 
 		try {
 			const { ethereum } = window;
 
 			if (!ethereum) {
-				console.log('Make sure you have metamask!');
+				alert('Make sure you have metamask!');
+                loadMe();
 				return;
 			} else {
-				console.log('We have the ethereum object', ethereum);
+				console.log('1. ethereum object injected', ethereum);
 			}
 
 			// check if we are authorized to access the public address of user
@@ -48,18 +54,17 @@ export default function App() {
 
 			if (accounts.length !== 0) {
 				const account = accounts[0];
-				console.log(`Found an authorized account ${account}`);
-				setCurrentAccount(account);
+                setCurrentAccount(account);
+				console.log(`2. access to an account was granted`, currentAccount);
 				getAllWaves();
 			} else {
-				console.log('No accounts are accessible');
+				console.log('x. No accounts are accessible');
 			}
 		} catch (error) {
 			console.log(error);
 		}
 
-		setIsLoading(false);
-		setLoadingMsg('Loading...');
+		loadMe();
 	};
 
 	// This runs our function when the page loads.
@@ -69,17 +74,18 @@ export default function App() {
 
     useEffect( () => {
         getAllWaves();
-    },[currentAccount])
+    },[currentAccount, isWaving])
 
 	const connectWallet = async () => {
-		setIsLoading(true);
-		setLoadingMsg('Requesting wallet');
+
+        loadMe(true, 'Requesting wallet' );
 
 		try {
 			const { ethereum } = window;
 
 			if (!ethereum) {
 				alert('Get MetaMask!');
+                loadMe();
 				return;
 			}
 
@@ -89,17 +95,19 @@ export default function App() {
 
 			console.log('Connected', accounts[0]);
 			setCurrentAccount(accounts[0]);
+            console.log(`2. access to an account was granted`, currentAccount);
+
 		} catch (error) {
 			console.log(error);
 		}
 
-		setIsLoading(false);
-		setLoadingMsg('Loading...');
+		loadMe();
 	};
 
 	const wave = async () => {
+
 		setIsWaving(true);
-		setWaveBtnMsg('Waving');
+		setWaveBtnMsg('Waving... \nPlease Confirm the transaction');
 
 		try {
 			const { ethereum } = window;
@@ -113,10 +121,10 @@ export default function App() {
 					signer,
 				);
 
-				await wavePortalContract.wave(greeting);
-				console.log('Waved to omkar with greeting as ', greeting);
+				await wavePortalContract.wave(greeting, { gasLimit: 300000 });
+				console.log('3. Waved to omkar with greeting as ', greeting);
 			} else {
-				console.log("Ethereum object doesn't exist!");
+				console.log("x. ethereum object doesn't exist!");
 			}
 		} catch (error) {
 			console.log(error);
@@ -150,8 +158,9 @@ export default function App() {
 				});
 
 				setAllWaves(wavesCleaned);
+
 			} else {
-				console.log("Ethereum object doesn't exist!");
+				console.log("x. ethereum object doesn't exist!");
 			}
 		} catch (error) {
 			console.log(error);
@@ -188,6 +197,8 @@ export default function App() {
 	const onChange = (e) => setGreeting(e.target.value);
 
 	return (
+
+        <>
         
 		<div className='mainContainer'>
 			{isLoading ? (
@@ -199,57 +210,74 @@ export default function App() {
 					<div className='bio'>
 						I am Omkar, an Engineering undergrad and a web3 enthusiast.
 						<br />
-						This is my first web3 project and Hop in if you find
+                        Send me your greetings through Ethereum and I will reward you with some ether.
+                        <br />
+						This is my first web3 project. Hop in if you find
 						this interesting.
 						<br />
-                        Get <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'>metamask</a> and <a href='https://faucets.chain.link/rinkeby'>rinkeby test ether</a> to read greetings.
+                        Get <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn' target='blank'>metamask</a> and <a href='https://faucets.chain.link/rinkeby' target='blank'>rinkeby test ether</a> to proceed.
 					</div>
 
                     {!currentAccount && (
-						<button className='waveButton' onClick={connectWallet}>
+						<button className='button' onClick={connectWallet}>
 							Connect Wallet
 						</button>
 					)}
 
                     {currentAccount && (
-						<input
-							type='text'
-                            placeholder="Messages are immutable"
-                            className='usrtxt type-1'
-							onChange={(e) => {
-								onChange(e);
-							}}
-                            required
-						/>
-					)}
+                        <>
+                            { !isWaving && (
+                                <input
+                                    type='text'
+                                    placeholder="Enter your greetings here"
+                                    className='usrtxt type-1'
+                                    onChange={(e) => {
+                                        onChange(e);
+                                    }}
+                                    required
+                                />
+                            )}
+                            <button
+                            className='button'
+                            onClick={wave}
+                            disable={isWaving.toString()}
+                            >
+                                {waveBtnMsg}
+                            </button>
+                            <div className='wall-header'>
+                                Wall of Wavers
+                            </div>
+                        
 
-					<button
-						className='waveButton'
-						onClick={wave}
-						disable={isWaving.toString()}
-					>
-						{waveBtnMsg}
-					</button>
+                            {allWaves.map((wave, index) => {
+                                return (
 
-					
+                                    
+                                    
+                                    
+                                    <div
+                                        className='element'
+                                        key={index}
+                                        
+                                    >
+                                        <div className='msg'>{wave.message}</div>
+                                        <div className='adr'>by: {wave.address}</div>
+                                        <div className='dt'>at: {wave.timestamp.toString()}</div>
+                                        
+                                    </div>
 
-					{allWaves.map((wave, index) => {
-						return (
-							<div
-                                className='element'
-								key={index}
-								
-							>
-								<div>Address: {wave.address}</div>
-								<div>Time: {wave.timestamp.toString()}</div>
-								<div>Message: {wave.message}</div>
-							</div>
-						);
-					})}
+                                    
+                                );
+                            })}
+                        </>
+                    )}
+
 				</div>
 			)}
 
             
 		</div>
+        <Footer />
+        </>
 	);
 }
