@@ -1,5 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bb15d90d-ecf0-4e38-b052-9d0740cf8eee/deploy-status)](https://app.netlify.com/sites/wave-at-omkar/deploys)
 ![npm](https://img.shields.io/npm/v/npm)
+[![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re)
 
 ## Wave Portal - Wave at me through ethereum blockchain
 
