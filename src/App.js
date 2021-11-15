@@ -28,15 +28,19 @@ export default function App() {
 	const [isWaving, setIsWaving] = useState(false);
 	const [waveBtnMsg, setWaveBtnMsg] = useState('Wave at Me');
 
+    const [chainId, setChainId] = useState('');
+
     const loadMe = (isl=false, lmsg='Loading...') => {
         setIsLoading(isl);
 		setLoadingMsg(lmsg);
     }
 
+    
+
 	// check for access to window.ethereum
 	const checkIfWalletIsConnected = async () => {
 
-        loadMe(true, 'Checking requirements');
+        loadMe(true, 'Checking...');
 
 		try {
 			const { ethereum } = window;
@@ -56,6 +60,27 @@ export default function App() {
 				const account = accounts[0];
                 setCurrentAccount(account);
 				console.log(`2. access to an account was granted`, currentAccount);
+
+                const chainId = await ethereum.request({ method: 'eth_chainId' });
+
+                setChainId(chainId.toString());
+                ethereum.on('chainChanged', handleChainChanged);
+
+                function handleChainChanged(_chainId) {
+                    // We recommend reloading the page, unless you must do otherwise
+                    window.location.reload();
+                }
+
+                console.log('3. checking chainId', chainId);
+
+                if(chainId!=='0x4'){
+                    setWaveBtnMsg('Please switch to rinkeby network');
+                    loadMe(true, 'Switch to rinkeby');
+                    alert('Please switch to rinkeby network');
+                    return;
+                }
+                
+                
 				getAllWaves();
 			} else {
 				console.log('x. No accounts are accessible');
@@ -224,7 +249,7 @@ export default function App() {
 						</button>
 					)}
 
-                    {currentAccount && (
+                    {currentAccount && chainId === '0x4' && (
                         <>
                             { !isWaving && (
                                 <input
@@ -271,6 +296,7 @@ export default function App() {
                             })}
                         </>
                     )}
+
 
 				</div>
 			)}
