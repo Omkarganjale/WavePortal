@@ -270,7 +270,7 @@ export default function App() {
                                 {waveBtnMsg}
                             </button>
                             <div className='wall-header'>
-                                Wall of Wavers
+                                👋Hey amigo!
                             </div>
                         
 
@@ -294,6 +294,10 @@ export default function App() {
                                     
                                 );
                             })}
+
+                            <div className='header'>
+                            
+                            </div>
                         </>
                     )}
 
