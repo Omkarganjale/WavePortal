@@ -126,6 +126,7 @@ a{
     color: #CCD2D0;
     font-size: 14px;
     text-align : center;
-    position: relative; 
+    margin-bottom: 0;
+    position: fixed; 
     padding: 0.3em 0 0.3em 0;
 }
